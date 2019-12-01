@@ -47,5 +47,49 @@ namespace parking_lot_test
             Assert.Single(parkingLotA.ticketToCars);
             Assert.Empty(parkingLotB.ticketToCars);
         }
+
+//        3: given 被小弟管理的AB两个停车场，A是满的停车场、B是空的停车场，并且停车顺序是A\B when 我让小弟去停车 then 小弟将车停在B 我可以从小弟那里得到一张小票
+        [Fact]
+        public void should_return_ticket_and_car_exist_B_when_parking_boy_to_parking_car_and_A_is_full()
+        {
+            var parkingLots = new List<ParkingLot>();
+            var parkingLotA = new ParkingLot();
+            var parkingLotB = new ParkingLot();
+            parkingLots.Add(parkingLotA);
+            parkingLots.Add(parkingLotB);
+
+            var packingBoy = new PackingBoy(parkingLots);
+            for (int i = 0; i < 20; i++)
+            {
+                packingBoy.Park(new Car());
+            }
+
+            var ticket = packingBoy.Park(_car);
+            Assert.NotNull(ticket);
+            Assert.Equal(20,parkingLotA.ticketToCars.Count);
+            Assert.Single(parkingLotB.ticketToCars);
+        }
+
+//        4: given 被小弟管理的AB两个停车场，AB是满的停车场，并且停车顺序是A\B when 我让小弟去停车 then 提示停车场已满
+        [Fact]
+        public void should_not_save_car_when_parking_boy_to_parking_car_and_A_and_is_full()
+        {
+            var parkingLots = new List<ParkingLot>();
+            var parkingLotA = new ParkingLot();
+            var parkingLotB = new ParkingLot();
+            parkingLots.Add(parkingLotA);
+            parkingLots.Add(parkingLotB);
+
+            var packingBoy = new PackingBoy(parkingLots);
+            for (int i = 0; i < 40; i++)
+            {
+                 packingBoy.Park(new Car());
+            }
+
+            Assert.Equal(20,parkingLotA.ticketToCars.Count);
+            Assert.Equal(20,parkingLotB.ticketToCars.Count);
+            var exception = Assert.Throws<Exception>(() => packingBoy.Park(new Car()));
+            Assert.Equal("ParkingLot is full",exception.Message);
+        }
     }
 }

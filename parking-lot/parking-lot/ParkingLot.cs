@@ -6,7 +6,7 @@ namespace parking_lot
     public class ParkingLot
     {
         public Dictionary<object, Car> ticketToCars;
-        public int ParkingLotSize { get; } = 2;
+        public int ParkingLotSize { get; } = 20;
 
         public ParkingLot()
         {
