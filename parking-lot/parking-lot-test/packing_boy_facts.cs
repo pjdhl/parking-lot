@@ -91,5 +91,28 @@ namespace parking_lot_test
             var exception = Assert.Throws<Exception>(() => packingBoy.Park(new Car()));
             Assert.Equal("ParkingLot is full",exception.Message);
         }
+
+//        6: given 被小弟管理的AB两个停车场，A还有空的，B是满的停车场，并且停车顺序是A\B when 小弟去停车 then 小弟将车停在A,我可以从小弟得到一张票
+        [Fact]
+        public void should_not_save_car_when_parking_boy_to_parking_car_and_B_and_is_full()
+        {
+            var parkingLots = new List<ParkingLot>();
+            var parkingLotA = new ParkingLot();
+            var parkingLotB = new ParkingLot();
+            parkingLots.Add(parkingLotA);
+            parkingLots.Add(parkingLotB);
+
+            var packingBoy = new PackingBoy(parkingLots);
+            for (int i = 0; i < 20; i++)
+            {
+                parkingLotB.Park(new Car());
+            }
+
+            var ticket = packingBoy.Park(_car);
+            Assert.NotNull(ticket);
+            Assert.Equal(20,parkingLotB.ticketToCars.Count);
+            Assert.Single(parkingLotA.ticketToCars);
+        }
+
     }
 }
