@@ -32,5 +32,27 @@ namespace parking_lot
             return ticket;
         }
 
+        public object getCar(object ticket)
+        {
+            int index = 0;
+            bool flag = false;
+            for (int i = 0; i < PackingLot.Count; i++)
+            {
+                if (PackingLot[i].ticketToCars.ContainsKey(ticket))
+                {
+                    index = i;
+                    flag = true;
+                }
+            }
+
+            if (flag)
+            {
+                return PackingLot[index].ticketToCars[ticket];
+            }
+            else
+            {
+                throw new Exception("Invalid ticket!");
+            }
+        }
     }
 }

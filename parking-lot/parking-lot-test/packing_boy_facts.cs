@@ -114,5 +114,61 @@ namespace parking_lot_test
             Assert.Single(parkingLotA.ticketToCars);
         }
 
+
+//        1: given 被小弟管理的一个停车场和一张有效小票 when 我让小弟去取车 then 我可以得到我的车
+        [Fact]
+        public void should_get_my_car_when_parking_boy_to_get_car_with_a_validate_ticket()
+        {
+            var parkingLots = new List<ParkingLot>();
+            var parkingLotA = new ParkingLot();
+            parkingLots.Add(parkingLotA);
+
+            var packingBoy = new PackingBoy(parkingLots);
+            var ticket = packingBoy.Park(_car);
+
+            var myCar = packingBoy.getCar(ticket);
+            Assert.NotNull(myCar);
+            Assert.Same(_car, myCar);
+        }
+
+//        2: given 被小弟管理的AB两个停车场和一张有效小票(车停在B停车场) when 我让小弟去取车 then 我可以得到我的车
+        [Fact]
+        public void should_get_my_car_when_parking_boy_to_get_car_with_a_validate_ticket_with_A_and_B_parking()
+        {
+            var parkingLots = new List<ParkingLot>();
+            var parkingLotA = new ParkingLot();
+            var parkingLotB = new ParkingLot();
+            parkingLots.Add(parkingLotA);
+            parkingLots.Add(parkingLotB);
+
+            var packingBoy = new PackingBoy(parkingLots);
+            for (int i = 0; i < 20; i++)
+            {
+                parkingLotA.Park(new Car());
+            }
+            var ticket = packingBoy.Park(_car);
+
+            var myCar = packingBoy.getCar(ticket);
+
+            Assert.NotNull(myCar);
+            Assert.Same(_car, myCar);
+        }
+
+//        3: given 被小弟管理的AB两个停车场和一张白纸 when 我让小弟去取车 then 提示小票无效
+        [Fact]
+        public void should_get_message_when_parking_boy_to_get_car_with_a_invalid_ticket_with_A_and_B_parking()
+        {
+            var parkingLots = new List<ParkingLot>();
+            var parkingLotA = new ParkingLot();
+            var parkingLotB = new ParkingLot();
+            parkingLots.Add(parkingLotA);
+            parkingLots.Add(parkingLotB);
+
+            var packingBoy = new PackingBoy(parkingLots);
+
+            var invalidTicket = new object();
+            var exception = Assert.Throws<Exception>(() => { packingBoy.getCar(invalidTicket); });
+            Assert.Equal("Invalid ticket!", exception.Message);
+        }
     }
 }
