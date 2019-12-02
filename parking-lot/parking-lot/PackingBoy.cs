@@ -5,26 +5,26 @@ namespace parking_lot
 {
     public class PackingBoy
     {
-        public List<ParkingLot> PackingLot { get; }
+        public List<ParkingLot> ParkingLot { get; }
 
-        public PackingBoy(List<ParkingLot> packingLot)
+        public PackingBoy(List<ParkingLot> parkingLot)
         {
-            PackingLot = packingLot;
+            ParkingLot = parkingLot;
         }
 
         public object Park(Car car)
         {
             var ticket = new object();
-            for (int i = 0; i < PackingLot.Count; i++)
+            for (int i = 0; i < ParkingLot.Count; i++)
             {
-                if (PackingLot[i].ticketToCars.Count == PackingLot[i].ParkingLotSize)
+                if (ParkingLot[i].ticketToCars.Count == ParkingLot[i].ParkingLotSize)
                 {
-                    ticket = PackingLot[i + 1].Park(car);
+                    ticket = ParkingLot[i + 1].Park(car);
                     break;
                 }
                 else
                 {
-                    ticket = PackingLot[i].Park(car);
+                    ticket = ParkingLot[i].Park(car);
                     break;
                 }
             }
@@ -32,13 +32,13 @@ namespace parking_lot
             return ticket;
         }
 
-        public object getCar(object ticket)
+        public object GetCar(object ticket)
         {
             int index = 0;
             bool flag = false;
-            for (int i = 0; i < PackingLot.Count; i++)
+            for (int i = 0; i < ParkingLot.Count; i++)
             {
-                if (PackingLot[i].ticketToCars.ContainsKey(ticket))
+                if (ParkingLot[i].ticketToCars.ContainsKey(ticket))
                 {
                     index = i;
                     flag = true;
@@ -47,7 +47,9 @@ namespace parking_lot
 
             if (flag)
             {
-                return PackingLot[index].ticketToCars[ticket];
+                var car = ParkingLot[index].ticketToCars[ticket];
+                ParkingLot[index].ticketToCars.Remove(ticket);
+                return car;
             }
             else
             {

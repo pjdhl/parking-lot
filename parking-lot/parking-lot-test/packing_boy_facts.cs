@@ -9,6 +9,7 @@ namespace parking_lot_test
     public class packing_boy_facts
     {
         private Car _car;
+
         public packing_boy_facts()
         {
             _car = new Car();
@@ -66,7 +67,7 @@ namespace parking_lot_test
 
             var ticket = packingBoy.Park(_car);
             Assert.NotNull(ticket);
-            Assert.Equal(20,parkingLotA.ticketToCars.Count);
+            Assert.Equal(20, parkingLotA.ticketToCars.Count);
             Assert.Single(parkingLotB.ticketToCars);
         }
 
@@ -83,13 +84,13 @@ namespace parking_lot_test
             var packingBoy = new PackingBoy(parkingLots);
             for (int i = 0; i < 40; i++)
             {
-                 packingBoy.Park(new Car());
+                packingBoy.Park(new Car());
             }
 
-            Assert.Equal(20,parkingLotA.ticketToCars.Count);
-            Assert.Equal(20,parkingLotB.ticketToCars.Count);
+            Assert.Equal(20, parkingLotA.ticketToCars.Count);
+            Assert.Equal(20, parkingLotB.ticketToCars.Count);
             var exception = Assert.Throws<Exception>(() => packingBoy.Park(new Car()));
-            Assert.Equal("ParkingLot is full",exception.Message);
+            Assert.Equal("ParkingLot is full", exception.Message);
         }
 
 //        6: given 被小弟管理的AB两个停车场，A还有空的，B是满的停车场，并且停车顺序是A\B when 小弟去停车 then 小弟将车停在A,我可以从小弟得到一张票
@@ -110,7 +111,7 @@ namespace parking_lot_test
 
             var ticket = packingBoy.Park(_car);
             Assert.NotNull(ticket);
-            Assert.Equal(20,parkingLotB.ticketToCars.Count);
+            Assert.Equal(20, parkingLotB.ticketToCars.Count);
             Assert.Single(parkingLotA.ticketToCars);
         }
 
@@ -126,7 +127,7 @@ namespace parking_lot_test
             var packingBoy = new PackingBoy(parkingLots);
             var ticket = packingBoy.Park(_car);
 
-            var myCar = packingBoy.getCar(ticket);
+            var myCar = packingBoy.GetCar(ticket);
             Assert.NotNull(myCar);
             Assert.Same(_car, myCar);
         }
@@ -146,9 +147,10 @@ namespace parking_lot_test
             {
                 parkingLotA.Park(new Car());
             }
+
             var ticket = packingBoy.Park(_car);
 
-            var myCar = packingBoy.getCar(ticket);
+            var myCar = packingBoy.GetCar(ticket);
 
             Assert.NotNull(myCar);
             Assert.Same(_car, myCar);
@@ -167,7 +169,43 @@ namespace parking_lot_test
             var packingBoy = new PackingBoy(parkingLots);
 
             var invalidTicket = new object();
-            var exception = Assert.Throws<Exception>(() => { packingBoy.getCar(invalidTicket); });
+            var exception = Assert.Throws<Exception>(() => { packingBoy.GetCar(invalidTicket); });
+            Assert.Equal("Invalid ticket!", exception.Message);
+        }
+
+//        4: given 被小弟管理的AB两个停车场和一张用过的小票 when 我让小弟去取车 then 提示小票无效
+
+        [Fact]
+        public void should_get_message_when_parking_boy_to_get_car_with_a_used_ticket_with_A_and_B_parking()
+        {
+            var parkingLots = new List<ParkingLot>();
+            var parkingLotA = new ParkingLot();
+            var parkingLotB = new ParkingLot();
+            parkingLots.Add(parkingLotA);
+            parkingLots.Add(parkingLotB);
+
+            var packingBoy = new PackingBoy(parkingLots);
+            var ticketed = packingBoy.Park(_car);
+            var car = packingBoy.GetCar(ticketed);
+            Assert.NotNull(car);
+
+            var exception = Assert.Throws<Exception>(() => { packingBoy.GetCar(ticketed); });
+            Assert.Equal("Invalid ticket!", exception.Message);
+        }
+
+//        5: given 不被小弟管理的A停车场和一张有效小票 when 我让小弟去取车 then 提示小票无效
+        [Fact]
+        public void should_get_message_when_parking_boy_to_get_car_with_a_invalid_ticket_with_dont_manager_A_parking()
+        {
+            var parkingLots = new List<ParkingLot>();
+            var parkingLotA = new ParkingLot();
+            var parkingLotB = new ParkingLot();
+            parkingLots.Add(parkingLotB);
+
+            var ticket = parkingLotA.Park(_car);
+            var packingBoy = new PackingBoy(parkingLots);
+
+            var exception = Assert.Throws<Exception>(() => { packingBoy.GetCar(ticket); });
             Assert.Equal("Invalid ticket!", exception.Message);
         }
     }
