@@ -9,6 +9,7 @@ namespace parking_lot_test
     public class packing_boy_facts
     {
         private Car _car;
+        private int parkingSize = 20;
 
         public packing_boy_facts()
         {
@@ -21,7 +22,7 @@ namespace parking_lot_test
         {
 
             var parkingLots = new List<ParkingLot>();
-            var parkingLot = new ParkingLot();
+            var parkingLot = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLot);
             var packingBoy = new PackingBoy(parkingLots);
 
@@ -36,8 +37,8 @@ namespace parking_lot_test
         public void should_return_ticket_when_let_boy_to_parking_car_with_manager_parking_lot_A_and_B_order_A_first()
         {
             var parkingLots = new List<ParkingLot>();
-            var parkingLotA = new ParkingLot();
-            var parkingLotB = new ParkingLot();
+            var parkingLotA = new ParkingLot(parkingSize);
+            var parkingLotB = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
@@ -54,8 +55,8 @@ namespace parking_lot_test
         public void should_return_ticket_and_car_exist_B_when_parking_boy_to_parking_car_and_A_is_full()
         {
             var parkingLots = new List<ParkingLot>();
-            var parkingLotA = new ParkingLot();
-            var parkingLotB = new ParkingLot();
+            var parkingLotA = new ParkingLot(parkingSize);
+            var parkingLotB = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
@@ -76,8 +77,8 @@ namespace parking_lot_test
         public void should_not_save_car_when_parking_boy_to_parking_car_and_A_and_is_full()
         {
             var parkingLots = new List<ParkingLot>();
-            var parkingLotA = new ParkingLot();
-            var parkingLotB = new ParkingLot();
+            var parkingLotA = new ParkingLot(parkingSize);
+            var parkingLotB = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
@@ -98,8 +99,8 @@ namespace parking_lot_test
         public void should_not_save_car_when_parking_boy_to_parking_car_and_B_and_is_full()
         {
             var parkingLots = new List<ParkingLot>();
-            var parkingLotA = new ParkingLot();
-            var parkingLotB = new ParkingLot();
+            var parkingLotA = new ParkingLot(parkingSize);
+            var parkingLotB = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
@@ -115,13 +116,30 @@ namespace parking_lot_test
             Assert.Single(parkingLotA.ticketToCars);
         }
 
+//        7: given 被小弟管理的AB两个停车场和一个不被小弟管理着的停车场，并且停车顺序是A\B when 小弟去停车 then 小弟将车停在A,我可以从小弟得到一张票
+        [Fact]
+        public void should_get_ticket_when_parking_boy_to_parking_car_and_A_and_B_is_manager_and_C_not_manager()
+        {
+            var parkingLots = new List<ParkingLot>();
+            var parkingLotA = new ParkingLot(parkingSize);
+            var parkingLotB = new ParkingLot(parkingSize);
+            parkingLots.Add(parkingLotA);
+            parkingLots.Add(parkingLotB);
+            var parkingLotNotManager = new ParkingLot(parkingSize);
+            var packingBoy = new PackingBoy(parkingLots);
+            var ticket = packingBoy.Park(_car);
+            Assert.NotNull(ticket);
+            Assert.Single(parkingLotA.ticketToCars);
+            Assert.Empty(parkingLotNotManager.ticketToCars);
+        }
+
 
 //        1: given 被小弟管理的一个停车场和一张有效小票 when 我让小弟去取车 then 我可以得到我的车
         [Fact]
         public void should_get_my_car_when_parking_boy_to_get_car_with_a_validate_ticket()
         {
             var parkingLots = new List<ParkingLot>();
-            var parkingLotA = new ParkingLot();
+            var parkingLotA = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLotA);
 
             var packingBoy = new PackingBoy(parkingLots);
@@ -137,13 +155,13 @@ namespace parking_lot_test
         public void should_get_my_car_when_parking_boy_to_get_car_with_a_validate_ticket_with_A_and_B_parking()
         {
             var parkingLots = new List<ParkingLot>();
-            var parkingLotA = new ParkingLot();
-            var parkingLotB = new ParkingLot();
+            var parkingLotA = new ParkingLot(parkingSize);
+            var parkingLotB = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
             var packingBoy = new PackingBoy(parkingLots);
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < parkingSize; i++)
             {
                 parkingLotA.Park(new Car());
             }
@@ -161,8 +179,8 @@ namespace parking_lot_test
         public void should_get_message_when_parking_boy_to_get_car_with_a_invalid_ticket_with_A_and_B_parking()
         {
             var parkingLots = new List<ParkingLot>();
-            var parkingLotA = new ParkingLot();
-            var parkingLotB = new ParkingLot();
+            var parkingLotA = new ParkingLot(parkingSize);
+            var parkingLotB = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
@@ -179,8 +197,8 @@ namespace parking_lot_test
         public void should_get_message_when_parking_boy_to_get_car_with_a_used_ticket_with_A_and_B_parking()
         {
             var parkingLots = new List<ParkingLot>();
-            var parkingLotA = new ParkingLot();
-            var parkingLotB = new ParkingLot();
+            var parkingLotA = new ParkingLot(parkingSize);
+            var parkingLotB = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
@@ -198,8 +216,8 @@ namespace parking_lot_test
         public void should_get_message_when_parking_boy_to_get_car_with_a_invalid_ticket_with_dont_manager_A_parking()
         {
             var parkingLots = new List<ParkingLot>();
-            var parkingLotA = new ParkingLot();
-            var parkingLotB = new ParkingLot();
+            var parkingLotA = new ParkingLot(parkingSize);
+            var parkingLotB = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLotB);
 
             var ticket = parkingLotA.Park(_car);
@@ -207,6 +225,23 @@ namespace parking_lot_test
 
             var exception = Assert.Throws<Exception>(() => { packingBoy.GetCar(ticket); });
             Assert.Equal("Invalid ticket!", exception.Message);
+        }
+
+//        1: given 被聪明小弟管理的A、B两个20车位的停车场，并且停车顺序是A\B，A有10个空车位，B有11个空车位 when 我让小弟去停车 then 小弟将车停在B 我可以从小弟那里得到一张小票
+        [Fact]
+        public void should_get_ticket__when_parking_smart_boy_to_parking_car_and_A_B_is_manager_and_B_empty_parking_lot_more_than_A()
+        {
+            var parkingLots = new List<ParkingLot>();
+            var parkingLotA = new ParkingLot(10);
+            var parkingLotB = new ParkingLot(11);
+            parkingLots.Add(parkingLotA);
+            parkingLots.Add(parkingLotB);
+            var packingBoy = new PackingBoy(parkingLots);
+            var ticket = packingBoy.Park(_car);
+
+            Assert.NotNull(ticket);
+            Assert.Single(parkingLotB.ticketToCars);
+            Assert.Empty(parkingLotB.ticketToCars);
         }
     }
 }

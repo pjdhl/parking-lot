@@ -14,7 +14,7 @@ namespace parking_lot_test
         public parking_lot_facts()
         {
             _car = new Car();
-            _parkingLot = new ParkingLot();
+            _parkingLot = new ParkingLot(parkingLotSize);
         }
         
         [Fact]

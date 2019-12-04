@@ -6,11 +6,13 @@ namespace parking_lot
     public class ParkingLot
     {
         public Dictionary<object, Car> ticketToCars;
-        public int ParkingLotSize { get; } = 20;
 
-        public ParkingLot()
+        private int ParkingLotSize { get; }
+
+        public ParkingLot(int parkingLotSize)
         {
             ticketToCars = new Dictionary<object, Car>();
+            ParkingLotSize = parkingLotSize;
         }
 
         public object Park(Car car)
@@ -45,5 +47,28 @@ namespace parking_lot
             }
 
         }
+
+        public bool IsHasSpace()
+        {
+            if (ticketToCars.Count == ParkingLotSize)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool IsHasCar(object ticket)
+        {
+            return ticketToCars.ContainsKey(ticket);
+        }
+
+        public int GetLot()
+        {
+            return ParkingLotSize - ticketToCars.Count;
+        }
+
     }
 }
