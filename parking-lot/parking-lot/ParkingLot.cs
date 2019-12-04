@@ -65,7 +65,7 @@ namespace parking_lot
             return ticketToCars.ContainsKey(ticket);
         }
 
-        public int GetLot()
+        public int GetSpace()
         {
             return ParkingLotSize - ticketToCars.Count;
         }
