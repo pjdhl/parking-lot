@@ -12,7 +12,7 @@ namespace parking_lot
             ParkingLot = parkingLot;
         }
 
-        public object Park(Car car)
+        public virtual object Park(Car car)
         {
             foreach (var parkingLot in ParkingLot)
             {

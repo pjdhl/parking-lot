@@ -9,24 +9,24 @@ namespace parking_lot
         {
         }
 
-        public ParkingLot GetMaximumParkingLot()
+
+        public override object Park(Car car)
         {
-            int maximum = 0;
             ParkingLot maxParkingLot = ParkingLot[0];
             foreach (var parkingLot in ParkingLot)
             {
-                if (parkingLot.GetSpace() > maximum)
+                if (parkingLot.GetSpace() > maxParkingLot.GetSpace())
                 {
-                    maximum = parkingLot.GetSpace();
                     maxParkingLot = parkingLot;
                 }
             }
-            if (maxParkingLot == ParkingLot[0])
+
+            if (maxParkingLot.GetSpace() == 0)
             {
                 throw new Exception("parking lot has full!");
             }
 
-            return maxParkingLot;
+            return maxParkingLot.Park(car);
         }
     }
 }
