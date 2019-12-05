@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace parking_lot
 {
-    public class PackingBoy
+    public class ParkingBoy: IParkMethod
     {
         public List<ParkingLot> ParkingLot { get; }
 
-        public PackingBoy(List<ParkingLot> parkingLot)
+        public ParkingBoy(List<ParkingLot> parkingLot)
         {
             ParkingLot = parkingLot;
         }

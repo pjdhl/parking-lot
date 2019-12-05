@@ -24,7 +24,7 @@ namespace parking_lot_test
             var parkingLots = new List<ParkingLot>();
             var parkingLot = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLot);
-            var packingBoy = new PackingBoy(parkingLots);
+            var packingBoy = new ParkingBoy(parkingLots);
 
             var car = new Car();
             var ticket = packingBoy.Park(car);
@@ -42,7 +42,7 @@ namespace parking_lot_test
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
-            var packingBoy = new PackingBoy(parkingLots);
+            var packingBoy = new ParkingBoy(parkingLots);
             var ticket = packingBoy.Park(_car);
 
             Assert.NotNull(ticket);
@@ -60,7 +60,7 @@ namespace parking_lot_test
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
-            var packingBoy = new PackingBoy(parkingLots);
+            var packingBoy = new ParkingBoy(parkingLots);
             for (int i = 0; i < 20; i++)
             {
                 packingBoy.Park(new Car());
@@ -82,7 +82,7 @@ namespace parking_lot_test
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
-            var packingBoy = new PackingBoy(parkingLots);
+            var packingBoy = new ParkingBoy(parkingLots);
             for (int i = 0; i < 40; i++)
             {
                 packingBoy.Park(new Car());
@@ -104,7 +104,7 @@ namespace parking_lot_test
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
-            var packingBoy = new PackingBoy(parkingLots);
+            var packingBoy = new ParkingBoy(parkingLots);
             for (int i = 0; i < 20; i++)
             {
                 parkingLotB.Park(new Car());
@@ -126,7 +126,7 @@ namespace parking_lot_test
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
             var parkingLotNotManager = new ParkingLot(parkingSize);
-            var packingBoy = new PackingBoy(parkingLots);
+            var packingBoy = new ParkingBoy(parkingLots);
             var ticket = packingBoy.Park(_car);
             Assert.NotNull(ticket);
             Assert.Single(parkingLotA.ticketToCars);
@@ -142,7 +142,7 @@ namespace parking_lot_test
             var parkingLotA = new ParkingLot(parkingSize);
             parkingLots.Add(parkingLotA);
 
-            var packingBoy = new PackingBoy(parkingLots);
+            var packingBoy = new ParkingBoy(parkingLots);
             var ticket = packingBoy.Park(_car);
 
             var myCar = packingBoy.GetCar(ticket);
@@ -160,7 +160,7 @@ namespace parking_lot_test
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
-            var packingBoy = new PackingBoy(parkingLots);
+            var packingBoy = new ParkingBoy(parkingLots);
             for (int i = 0; i < parkingSize; i++)
             {
                 parkingLotA.Park(new Car());
@@ -184,7 +184,7 @@ namespace parking_lot_test
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
-            var packingBoy = new PackingBoy(parkingLots);
+            var packingBoy = new ParkingBoy(parkingLots);
 
             var invalidTicket = new object();
             var exception = Assert.Throws<Exception>(() => { packingBoy.GetCar(invalidTicket); });
@@ -202,7 +202,7 @@ namespace parking_lot_test
             parkingLots.Add(parkingLotA);
             parkingLots.Add(parkingLotB);
 
-            var packingBoy = new PackingBoy(parkingLots);
+            var packingBoy = new ParkingBoy(parkingLots);
             var ticketed = packingBoy.Park(_car);
             var car = packingBoy.GetCar(ticketed);
             Assert.NotNull(car);
@@ -221,7 +221,7 @@ namespace parking_lot_test
             parkingLots.Add(parkingLotB);
 
             var ticket = parkingLotA.Park(_car);
-            var packingBoy = new PackingBoy(parkingLots);
+            var packingBoy = new ParkingBoy(parkingLots);
 
             var exception = Assert.Throws<Exception>(() => { packingBoy.GetCar(ticket); });
             Assert.Equal("Invalid ticket!", exception.Message);

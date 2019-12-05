@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace parking_lot
 {
-    public class ParkingSmartBoy: PackingBoy
+    public class ParkingSmartBoy: ParkingBoy
     {
         public ParkingSmartBoy(List<ParkingLot> parkingLot) : base(parkingLot)
         {
